@@ -73,6 +73,20 @@ namespace CassinoTrigatinho
             {
                 btGirar.Enabled = true;
                 tmrGiro.Enabled = false;
+                /*for (int i = 0;i < roleta.Length; i++)
+                {
+                    roleta[i] = 7;
+                }*/
+
+                if (roleta[0] == roleta[1] && roleta[1] == roleta[2])
+                {
+                    MessageBox.Show("PARABÉNS! VOCÊ GANHOU! 🎉🎊", "VITÓRIA!",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    foreach (Label lbl in tela)
+                    {
+                        lbl.ForeColor = Color.Green;
+                    }
+                }
             }
         }
     }
