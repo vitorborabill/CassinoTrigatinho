@@ -51,6 +51,8 @@ namespace CassinoTrigatinho
             tmrGiro.Enabled = true;
         }
 
+        List<string> jogadas = new List<string>();
+
         private void tmrGiro_Tick(object sender, EventArgs e)
         {
             bool parado = true;
@@ -77,7 +79,8 @@ namespace CassinoTrigatinho
             {
                 btGirar.Enabled = true;
                 tmrGiro.Enabled = false;
-                lbxUltimos.Items.Add($"{roleta[0]}-{roleta[1]}-{roleta[2]}");
+                string resultado = $"{roleta[0]}-{roleta[1]}-{roleta[2]}";
+                verificador(resultado);
                 //rtbUltimos.Text = $"{roleta[0]}-{roleta[1]}-{roleta[2]}\n"+rtbUltimos.Text;
                 if (roleta[0] == roleta[1] && roleta[1] == roleta[2])
                 {
@@ -90,34 +93,44 @@ namespace CassinoTrigatinho
                 }
             }
         }
-        List<string> jogadas;
+        
+        void verificador(string result)
+        {
+            jogadas.Add(result);
+            string[] num = result.Split('-');
+            if (!chbVitorias.Checked|| (num[0] == num[1] && num[1] == num[2]))
+            {
+                lbxUltimos.Items.Add(result);
+            }
+        }
+        private bool ehVitoria(string jogada)
+        {
+            string[] nums = jogada.Split('-');
+            return nums.Length == 3 && nums[0] == nums[1] && nums[1] == nums[2];
+        }
+
         private void chbVitorias_CheckedChanged(object sender, EventArgs e)
         {
-            if (chbVitorias.Checked)
+            lbxUltimos.Items.Clear();
+
+            foreach (string jogada in jogadas)
             {
-                jogadas = new List<string>();
-                foreach (string item in lbxUltimos.Items)
+                if (!chbVitorias.Checked || ehVitoria(jogada))
                 {
-                    jogadas.Add(item);
-                }
-                lbxUltimos.Items.Clear();
-                foreach (string item in jogadas)
-                {
-                    string[] nums = item.Split('-');
-                    if (nums[0] == nums[1] && nums[1] == nums[2])
-                    {
-                        lbxUltimos.Items.Add(item);
-                    }
+                    lbxUltimos.Items.Add(jogada);
                 }
             }
-            else
+        }
+        
+
+        private void btHack_Click(object sender, EventArgs e)
+        {
+            for(int i = 0; i < roleta.Length; i++)
             {
-                lbxUltimos.Items.Clear();
-                foreach (string item in jogadas)
-                {
-                    lbxUltimos.Items.Add(item);
-                }
+                roleta[i] = 7;
+                Atualizar(i);
             }
+            verificador("7-7-7");
         }
     }
 }
