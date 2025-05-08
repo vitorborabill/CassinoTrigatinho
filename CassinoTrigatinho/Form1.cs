@@ -32,6 +32,8 @@ namespace CassinoTrigatinho
             {
                 tela[j].Text = 0.ToString();
             }
+           btGirar.TabIndex = 0;
+           chbVitorias.TabIndex = 1;
         }
 
         void Atualizar(int indice)
